@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #1e1631;
+  color: #fbfbfa;
+}
+
+@layer base {
+  :root {
+    /* GymMawy theme colors */
+    --gymmawy-purple: 261 38% 15%;   /* #1e1631 */
+    --gymmawy-orange: 30 78% 52%;    /* #e78522 */
+    --gymmawy-white: 60 6% 98%;      /* #fbfbfa */
+    --gymmawy-pink: 340 33% 48%;     /* #9f5067 */
+    --gymmawy-gray: 270 3% 61%;      /* #9a989c */
+    --gymmawy-tan: 18 39% 70%;       /* #cfa393 */
+    --gymmawy-blue: 199 71% 49%;     /* #2c9ece */
+    --gymmawy-cream: 32 54% 77%;     /* #e3c8a4 */
+    --gymmawy-light-gray: 240 7% 80%;/* #c9c9cd */
+
+    /* Main theme variables */
+    --background: var(--gymmawy-purple);
+    --foreground: var(--gymmawy-white);
+    --card: 261 42% 20%;             /* Slightly lighter than background */
+    --card-foreground: var(--gymmawy-white);
+    --popover: var(--gymmawy-purple);
+    --popover-foreground: var(--gymmawy-white);
+    --primary: var(--gymmawy-orange);
+    --primary-foreground: var(--gymmawy-white);
+    --secondary: 270 5% 15%;         /* Dark gray-purple */
+    --secondary-foreground: var(--gymmawy-white);
+    --muted: 270 5% 22%;
+    --muted-foreground: var(--gymmawy-light-gray);
+    --accent: var(--gymmawy-orange);
+    --accent-foreground: var(--gymmawy-white);
+    --destructive: 0 84% 60%;
+    --destructive-foreground: var(--gymmawy-white);
+    --border: 270 3% 25%;
+    --input: 270 3% 25%;
+    --ring: var(--gymmawy-orange);
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: var(--gymmawy-purple);
+    --foreground: var(--gymmawy-white);
+    --card: 261 42% 20%;
+    --card-foreground: var(--gymmawy-white);
+    --popover: var(--gymmawy-purple);
+    --popover-foreground: var(--gymmawy-white);
+    --primary: var(--gymmawy-orange);
+    --primary-foreground: var(--gymmawy-white);
+    --secondary: 270 5% 15%;
+    --secondary-foreground: var(--gymmawy-white);
+    --muted: 270 5% 22%;
+    --muted-foreground: var(--gymmawy-light-gray);
+    --accent: var(--gymmawy-orange);
+    --accent-foreground: var(--gymmawy-white);
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: var(--gymmawy-white);
+    --border: 270 3% 25%;
+    --input: 270 3% 25%;
+    --ring: var(--gymmawy-orange);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-gymmawy-purple text-gymmawy-white;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
+}
+
+/* Custom utility classes for GymMawy theme */
+@layer utilities {
+  .bg-gradient-orange {
+    background: linear-gradient(to right, #e78522, #f49937);
+  }
+
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .dots-bg {
+    background-image: url('https://ext.same-assets.com/1396620093/2971229371.png');
+    background-repeat: repeat;
+  }
+
+  .trainer-card {
+    position: relative;
+    overflow: hidden;
+    background-color: #1e1631;
+    transition: transform 0.3s ease;
+  }
+
+  .trainer-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .trainer-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(to right, #e78522, #f49937);
+  }
+}

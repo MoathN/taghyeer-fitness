@@ -1,0 +1,5 @@
+{
+  "deployMode": "static",
+  "buildCommand": "cd taghyeer-fitness && bun run build",
+  "publishDirectory": "taghyeer-fitness/dist"
+}
