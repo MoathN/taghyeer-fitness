@@ -1,16 +1,16 @@
-# TAGHYEER Fitness - JavaScript Version
+# TAGHYEER Fitness - Frontend
 
-A modern fitness website built with React and JavaScript, inspired by the GymMawy design. This project provides a complete fitness platform with workout plans, nutrition guides, trainer profiles, and membership management.
+A modern fitness website built with React and JavaScript, inspired by the GymMawy design. This project provides a complete fitness platform UI with workout plans, nutrition guides, trainer profiles, and membership management.
 
 ## Features
 
 - **Modern UI Design**: Dark purple and orange color scheme with dotted background patterns
 - **Responsive Layout**: Works seamlessly on mobile and desktop devices
-- **User Authentication**: Login and registration functionality
+- **User Authentication UI**: Login and registration interface
 - **Workout Plans**: Browse and filter workout routines by difficulty and duration
 - **Trainer Profiles**: Showcases fitness trainers with their specializations
 - **Membership Management**: Subscription options with different pricing tiers
-- **Shopping Section**: Browse and purchase fitness supplements and equipment
+- **Shopping Section**: Browse fitness supplements and equipment
 
 ## Tech Stack
 
@@ -47,25 +47,26 @@ bun run build
 
 ```
 taghyeer-fitness/
-├── src/
-│   ├── components/  # UI components
-│   ├── layouts/     # Layout components
-│   ├── lib/         # Utility functions
-│   ├── pages/       # Page components
-│   │   ├── about/
-│   │   ├── auth/
-│   │   ├── contact/
-│   │   ├── dashboard/
-│   │   ├── home/
-│   │   ├── memberships/
-│   │   ├── nutrition/
-│   │   ├── shop/
-│   │   ├── trainers/
-│   │   └── workout-plans/
-│   ├── App.jsx      # Main application component
-│   └── main.jsx     # Application entry point
-├── public/          # Static assets
-└── index.html       # HTML entry point
+├── frontend/
+│   ├── src/
+│   │   ├── components/  # UI components
+│   │   ├── layouts/     # Layout components
+│   │   ├── lib/         # Utility functions
+│   │   ├── pages/       # Page components
+│   │   │   ├── about/
+│   │   │   ├── auth/
+│   │   │   ├── contact/
+│   │   │   ├── dashboard/
+│   │   │   ├── home/
+│   │   │   ├── memberships/
+│   │   │   ├── nutrition/
+│   │   │   ├── shop/
+│   │   │   ├── trainers/
+│   │   │   └── workout-plans/
+│   │   ├── App.jsx      # Main application component
+│   │   └── main.jsx     # Application entry point
+│   ├── public/          # Static assets
+│   └── index.html       # HTML entry point
 ```
 
 ## Credits
