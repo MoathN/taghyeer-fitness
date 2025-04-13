@@ -75,3 +75,4 @@ taghyeer-fitness/
 - Images from Unsplash
 - Icons from React Icons
 - UI components adapted from ShadCN UI
+"# TAGHYEER-front-end-V2" 
