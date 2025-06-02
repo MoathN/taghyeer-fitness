@@ -4,6 +4,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import axiosInstance from '@/utils/axios';
 
 import { Button } from "@/components/ui/button";
 import {
@@ -30,6 +31,7 @@ const registerSchema = z.object({
 
 const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const { login } = useOutletContext();
 
@@ -43,28 +45,63 @@ const Register = () => {
     },
   });
 
-  // Mock registration function
+  // Registration function with API call
   const handleRegister = async (values) => {
     setIsLoading(true);
+    setErrorMessage("");
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // In a real app, you would call your registration API here
-      const userData = {
-        id: "user" + Math.floor(Math.random() * 1000),
+      // Call the backend API to register
+      const response = await axiosInstance.post("/api/auth/register", {
         name: values.name,
         email: values.email,
-        role: "member",
-      };
-
-      toast.success("Registration successful!");
-      login(userData);
-      navigate("/dashboard");
+        password: values.password,
+        membershipType: "free", // Default membership type
+        role: "member" // Default role
+      });
+      
+      if (response.data && response.data.success) {
+        // Get the user data and token
+        const userData = response.data.user;
+        const token = response.data.token;
+        
+        // Show success message
+        toast.success("Account created successfully!");
+        
+        // Store user data and token
+        localStorage.setItem('taghyeerUser', JSON.stringify(userData));
+        localStorage.setItem('taghyeerToken', token);
+        
+        // Configure axios defaults for future requests
+        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        
+        // Log in the user
+        login(userData, token);
+        
+        // If the role is admin, redirect to admin users page
+        if (userData.role === 'admin') {
+          toast.info("Redirecting to admin page...");
+          setTimeout(() => {
+            navigate("/admin/users", { state: { newUser: userData } });
+          }, 1500);
+        } else {
+          // For regular members, show option to view in admin
+            navigate("/dashboard");
+        }
+      } else {
+        setErrorMessage(response.data?.message || "Registration failed");
+        toast.error(response.data?.message || "Registration failed");
+      }
     } catch (error) {
-      toast.error("Registration failed. Please try again.");
-      console.error(error);
+      console.error("Registration error:", error);
+      
+      if (error.response && error.response.status === 409) {
+        setErrorMessage("An account with this email already exists.");
+        toast.error("An account with this email already exists.");
+      } else {
+        setErrorMessage("Registration failed. Please try again later.");
+        toast.error(error.response?.data?.message || "Registration failed");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -80,6 +117,11 @@ const Register = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {errorMessage && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-md">
+              {errorMessage}
+            </div>
+          )}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleRegister)} className="space-y-4">
               <FormField

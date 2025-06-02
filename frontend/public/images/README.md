@@ -7,5 +7,6 @@ Save the following images to this directory:
 3. `upper-lower-split.jpg` - The image showing a man using a cable machine in front of "UPPER/LOWER" text on the wall
 4. `bro-split.jpg` - The image showing a man with a barbell on shoulders in front of "BRO SPLIT" text on the wall
 5. `full-body-split.jpg` - The image showing a man with a barbell on shoulders in front of "FULL BODY" text on the wall
+6. Chris Thompson: `Chris_Thompson.png` - Professional bodybuilder with extensive experience in muscle development.
 
-These images will be used for the workout program cards in the application. 
+These images will be used for the workout program cards in the application.

@@ -37,7 +37,7 @@ const Home = () => {
   const trainers = [
     {
       id: 1,
-      name: "Sarah Johnson",
+      name: "Chris Adam",
       specialization: "Strength & Conditioning",
       image: "https://images.unsplash.com/photo-1611672585731-fa10603fb9e0?q=80&w=300&h=400&auto=format&fit=crop",
       description: "10+ years experience in strength training and athletic conditioning.",
@@ -180,32 +180,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3">
-            <Card className="border-gymmawy-gray/10 bg-gymmawy-purple/80 transition-all hover:shadow-xl">
-              <CardHeader>
-                <CardTitle className="text-gymmawy-white">Free</CardTitle>
-                <div className="mt-2 text-4xl font-bold text-primary">$0<span className="text-lg font-normal text-gymmawy-gray">/month</span></div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <ul className="space-y-3">
-                  <li className="flex items-center gap-2 text-gymmawy-white">
-                    <MdFitnessCenter className="text-primary" /> Limited gym access (weekdays only)
-                  </li>
-                  <li className="flex items-center gap-2 text-gymmawy-white">
-                    <MdRestaurant className="text-primary" /> Basic fitness guides
-                  </li>
-                  <li className="flex items-center gap-2 text-gymmawy-white">
-                    <MdPerson className="text-primary" /> Access to beginner workouts
-                  </li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <Button asChild className="w-full bg-primary hover:bg-primary/90">
-                  <Link to="/memberships?plan=free">Get Started</Link>
-                </Button>
-              </CardFooter>
-            </Card>
-
+          <div className="grid gap-8 md:grid-cols-2">
             <Card className="border-primary bg-gymmawy-purple/80 shadow-lg transition-all hover:shadow-xl relative">
               <div className="absolute -top-4 left-0 right-0 mx-auto w-fit rounded-full bg-primary px-4 py-1 text-sm font-semibold text-white">Popular</div>
               <CardHeader>
@@ -227,7 +202,7 @@ const Home = () => {
               </CardContent>
               <CardFooter>
                 <Button asChild className="w-full bg-primary hover:bg-primary/90">
-                  <Link to="/memberships?plan=plus">Get Started</Link>
+                  <Link to="/payment?plan=plus">Get Started</Link>
                 </Button>
               </CardFooter>
             </Card>
@@ -235,7 +210,7 @@ const Home = () => {
             <Card className="border-gymmawy-gray/10 bg-gymmawy-purple/80 transition-all hover:shadow-xl">
               <CardHeader>
                 <CardTitle className="text-gymmawy-white">Pro</CardTitle>
-                <div className="mt-2 text-4xl font-bold text-primary">$200<span className="text-lg font-normal text-gymmawy-gray">/month</span></div>
+                <div className="mt-2 text-4xl font-bold text-primary">$100<span className="text-lg font-normal text-gymmawy-gray">/month</span></div>
               </CardHeader>
               <CardContent className="space-y-4">
                 <ul className="space-y-3">
@@ -252,7 +227,7 @@ const Home = () => {
               </CardContent>
               <CardFooter>
                 <Button asChild className="w-full bg-primary hover:bg-primary/90">
-                  <Link to="/memberships?plan=pro">Get Started</Link>
+                  <Link to="/payment?plan=pro">Get Started</Link>
                 </Button>
               </CardFooter>
             </Card>

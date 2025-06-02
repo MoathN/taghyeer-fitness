@@ -7,7 +7,7 @@ const Trainers = () => {
   const trainers = [
     {
       id: 1,
-      name: "Sarah Johnson",
+      name: "Chris Adam",
       specialization: "Strength & Conditioning",
       image: "https://images.unsplash.com/photo-1611672585731-fa10603fb9e0?q=80&w=300&h=400&auto=format&fit=crop",
       description: "10+ years experience in strength training and athletic conditioning.",
@@ -18,7 +18,7 @@ const Trainers = () => {
       id: 2,
       name: "Michael Rodriguez",
       specialization: "Cardio & HIIT",
-      image: "https://images.unsplash.com/photo-1567013127542-490d757e6349?q=80&w=300&h=400&auto=format&fit=crop",
+      image: "/public/images/Michael_Rodriguez.png",
       description: "Specializes in high-intensity interval training and cardio workouts.",
       featured: false,
       profilePath: "/michael-profile"
@@ -54,7 +54,7 @@ const Trainers = () => {
       id: 6,
       name: "Chris Thompson",
       specialization: "Bodybuilding",
-      image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=300&h=400&auto=format&fit=crop",
+      image: "/images/Chris_Thompson.png",
       description: "Professional bodybuilder with extensive experience in muscle development.",
       featured: true,
       profilePath: "/chris-profile"

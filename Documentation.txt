@@ -1,0 +1,48 @@
+# Documentation for TAGHYEER Fitness Website
+
+## Overview
+TAGHYEER Fitness is a comprehensive platform designed to help users achieve their fitness goals. It provides tools for tracking workouts, monitoring progress, and accessing fitness resources.
+
+## Features
+- User Registration and Login
+- Workout Tracking
+- Progress Monitoring
+- Fitness Articles and Resources
+- Integration with Wearable Devices
+
+## Installation
+1. Clone the repository:
+   ```
+   git clone <repository-url>
+   ```
+2. Navigate to the project directory:
+   ```
+   cd taghyeer-fitness
+   ```
+3. Install dependencies:
+   ```
+   mvn clean install
+   ```
+
+## Running the Application
+1. Start the backend server:
+   ```
+   mvn spring-boot:run
+   ```
+2. Access the frontend by navigating to `http://localhost:8080` in your browser.
+
+## Troubleshooting
+- **JDK Not Found**: Ensure `JAVA_HOME` is set correctly and `javac` is installed.
+- **Maven Errors**: Run `mvn -X` for detailed logs.
+
+## Contributing
+1. Fork the repository.
+2. Create a new branch for your feature:
+   ```
+   git checkout -b feature-name
+   ```
+3. Commit your changes and push to your fork.
+4. Submit a pull request.
+
+## License
+This project is licensed under the MIT License.

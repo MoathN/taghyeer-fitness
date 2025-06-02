@@ -1,31 +1,18 @@
-import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
-import { toast } from "sonner";
 import ScrollToTop from "../components/ScrollToTop";
+import { useAuth } from "@/contexts/AuthContext";
 
 const MainLayout = () => {
-  // Mock user state - in a real app, this would come from an auth context
-  const [user, setUser] = useState(null);
-
-  const handleLogout = () => {
-    setUser(null);
-    toast.success("Logged out successfully");
-  };
-
-  // Mock login function for demonstration purposes
-  const handleLogin = (userData) => {
-    setUser(userData);
-    toast.success("Logged in successfully");
-  };
+  const { user, login, logout } = useAuth();
 
   return (
     <div className="flex min-h-screen flex-col">
       <ScrollToTop />
-      <Header user={user} onLogout={handleLogout} />
+      <Header user={user} onLogout={logout} />
       <main className="flex-1">
-        <Outlet context={{ user, login: handleLogin, logout: handleLogout }} />
+        <Outlet context={{ user, login, logout }} />
       </main>
       <Footer />
     </div>

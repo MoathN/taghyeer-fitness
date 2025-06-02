@@ -10,16 +10,6 @@ const Memberships = () => {
 
   const plans = [
     {
-      id: "free",
-      title: "Free",
-      price: 0,
-      features: [
-        "Limited gym access (weekdays only)",
-        "Basic fitness guides",
-        "Access to beginner workouts",
-      ],
-    },
-    {
       id: "plus",
       title: "Plus",
       price: 20,
@@ -33,7 +23,7 @@ const Memberships = () => {
     {
       id: "pro",
       title: "Pro",
-      price: 200,
+      price: 100,
       features: [
         "Unlimited gym access + premium classes",
         "Advanced nutrition coaching",
@@ -51,7 +41,7 @@ const Memberships = () => {
         </p>
       </div>
 
-      <div className="grid gap-8 md:grid-cols-3">
+      <div className="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
         {plans.map((plan) => (
           <Card
             key={plan.id}
@@ -84,7 +74,7 @@ const Memberships = () => {
             </CardContent>
             <CardFooter>
               <Button asChild className="w-full bg-primary hover:bg-primary/90">
-                <Link to={`/auth/register?plan=${plan.id}`}>Get Started</Link>
+                <Link to={`/payment?plan=${plan.id}`}>Get Started</Link>
               </Button>
             </CardFooter>
           </Card>

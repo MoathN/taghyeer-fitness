@@ -10,12 +10,12 @@ const TrainerTest = () => {
       minHeight: "100vh" 
     }}>
       <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-        <h1 style={{ textAlign: "center", color: "#ff6b6b", marginBottom: "30px" }}>Sarah Johnson - Strength & Conditioning</h1>
+        <h1 style={{ textAlign: "center", color: "#ff6b6b", marginBottom: "30px" }}>Chris Adam - Strength & Conditioning</h1>
         
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "40px" }}>
           <img 
             src="https://images.unsplash.com/photo-1611672585731-fa10603fb9e0?q=80&w=300&auto=format&fit=crop" 
-            alt="Sarah Johnson" 
+            alt="Chris Adam" 
             style={{ 
               width: "200px", 
               height: "200px", 
@@ -26,8 +26,8 @@ const TrainerTest = () => {
             }} 
           />
           <p style={{ textAlign: "center", maxWidth: "700px", lineHeight: "1.6", marginBottom: "20px" }}>
-            Sarah Johnson is one of our most experienced trainers, specializing in strength training and athletic conditioning. 
-            With over a decade of experience, she has helped hundreds of clients achieve their fitness goals through 
+            Chris Adam is one of our most experienced trainers, specializing in strength training and athletic conditioning. 
+            With over a decade of experience, he has helped hundreds of clients achieve their fitness goals through 
             personalized training programs.
           </p>
         </div>
@@ -114,4 +114,4 @@ const TrainerTest = () => {
   );
 };
 
-export default TrainerTest; 
+export default TrainerTest;

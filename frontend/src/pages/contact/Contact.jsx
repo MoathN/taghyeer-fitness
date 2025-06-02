@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock } from "react-icons/fa";
-import axios from "axios";
+import axiosInstance from '@/utils/axios';
 
 import { Button } from "@/components/ui/button";
 import {
@@ -75,35 +75,25 @@ const Contact = () => {
     try {
       console.log("Submitting form with values:", values);
       
-      // Try with http://localhost:8080/api/contact
-      const response = await axios.post('http://localhost:8080/api/contact', values, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+      // Make a post request to the API using axiosInstance
+      const response = await axiosInstance.post('/api/contact', values);
       
       console.log("API response:", response.data);
       
-      toast.success("Message sent successfully! Our team will contact you soon.");
-      setSubmitted(true);
-      form.reset();
+      if (response.data?.success) {
+        toast.success("Message sent successfully! Our team will contact you soon.");
+        setSubmitted(true);
+        form.reset();
+      } else {
+        toast.error(response.data?.message || "Failed to send message. Please try again.");
+      }
     } catch (error) {
       console.error("Error sending message:", error);
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.error("Response data:", error.response.data);
-        console.error("Response status:", error.response.status);
-        console.error("Response headers:", error.response.headers);
-        toast.error(`Failed to send message: ${error.response.status} ${error.response.statusText}`);
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.error("No response received:", error.request);
-        toast.error("No response from server. Please check your internet connection.");
+      
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
       } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error("Error:", error.message);
-        toast.error(`Error: ${error.message}`);
+        toast.error("Failed to send message. Please try again later.");
       }
     } finally {
       setIsSubmitting(false);

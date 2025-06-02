@@ -14,11 +14,11 @@ const TrainerProfile = () => {
   const trainersData = [
     {
       id: 1,
-      name: "Sarah Johnson",
+      name: "Chris Adam",
       specialization: "Strength & Conditioning",
       image: "https://images.unsplash.com/photo-1611672585731-fa10603fb9e0?q=80&w=600&h=700&auto=format&fit=crop",
       description: "10+ years experience in strength training and athletic conditioning.",
-      bio: "Sarah Johnson is one of our most experienced trainers, specializing in strength training and athletic conditioning. With over a decade of experience, she has helped hundreds of clients achieve their fitness goals through personalized training programs.",
+      bio: "Chris Adam is one of our most experienced trainers, specializing in strength training and athletic conditioning. With over a decade of experience, he has helped hundreds of clients achieve their fitness goals through personalized training programs.",
       education: [
         "Bachelor's degree in Exercise Science, University of California",
         "Certified Strength and Conditioning Specialist (CSCS)",
@@ -585,4 +585,4 @@ const TrainerProfile = () => {
   );
 };
 
-export default TrainerProfile; 
+export default TrainerProfile;

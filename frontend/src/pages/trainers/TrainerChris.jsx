@@ -14,7 +14,7 @@ const TrainerChris = () => {
         
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "40px" }}>
           <img 
-            src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=300&auto=format&fit=crop" 
+            src="/images/Chris_Thompson.png" 
             alt="Chris Thompson" 
             style={{ 
               width: "200px", 
@@ -114,4 +114,4 @@ const TrainerChris = () => {
   );
 };
 
-export default TrainerChris; 
+export default TrainerChris;

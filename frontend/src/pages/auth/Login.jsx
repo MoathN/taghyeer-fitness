@@ -4,6 +4,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import axiosInstance from '@/utils/axios';
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +26,7 @@ const loginSchema = z.object({
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const { login } = useOutletContext();
 
@@ -36,38 +38,68 @@ const Login = () => {
     },
   });
 
-  // Mock authentication function
+  // Login function with API call
   const handleLogin = async (values) => {
     setIsLoading(true);
+    setErrorMessage("");
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // In a real app, you would call your authentication API here
-      // For testing purposes, if email contains "admin", give admin role
-      const isAdmin = values.email.toLowerCase().includes('admin');
-      
-      const userData = {
-        id: "user123",
-        name: isAdmin ? "Admin User" : "John Doe",
+      const response = await axiosInstance.post("/api/auth/login", {
         email: values.email,
-        role: isAdmin ? "admin" : "member",
-        image: null
-      };
-
-      login(userData);
+        password: values.password,
+      });
       
-      // Redirect to admin page if admin user
-      if (isAdmin) {
-        toast.success("Welcome back, Admin!");
-        navigate("/admin/contact-messages");
+      if (response.data && response.data.success) {
+        const userData = response.data.user;
+        const token = response.data.token;
+        
+        // Show success message
+        toast.success("Login successful!");
+        
+        // Store user data and token
+        localStorage.setItem('taghyeerUser', JSON.stringify(userData));
+        localStorage.setItem('taghyeerToken', token);
+        
+        // Configure axios defaults for future requests
+        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        
+        // Log in the user
+        login(userData, token);
+        
+        // For admin users, redirect to admin panel
+        if (userData.role === "admin") {
+          navigate("/admin/users");
+        } else {
+          // If it's a regular user, redirect to their dashboard
+          navigate("/dashboard");
+          
+          // If the user is an admin viewing the system, offer to view admin panel
+          if (window.location.href.includes("admin")) {
+            toast.info("Go to admin panel?", {
+              action: {
+                label: "View Admin Panel",
+                onClick: () => navigate("/admin/users")
+              }
+            });
+          }
+        }
       } else {
-        navigate("/dashboard");
+        setErrorMessage(response.data?.message || "Login failed");
+        toast.error(response.data?.message || "Login failed");
       }
     } catch (error) {
-      toast.error("Login failed. Please check your credentials.");
-      console.error(error);
+      console.error("Login error:", error);
+      
+      if (error.response?.status === 401) {
+        setErrorMessage("Invalid email or password");
+        toast.error("Invalid email or password");
+      } else if (error.response?.status === 404) {
+        setErrorMessage("User not found");
+        toast.error("User not found");
+      } else {
+        setErrorMessage("Login failed. Please try again later.");
+        toast.error(error.response?.data?.message || "Login failed");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -83,6 +115,11 @@ const Login = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {errorMessage && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-md">
+              {errorMessage}
+            </div>
+          )}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-4">
               <FormField
@@ -111,16 +148,19 @@ const Login = () => {
                   </FormItem>
                 )}
               />
+              <div className="flex justify-end">
+                <Link
+                  to="/auth/reset-password"
+                  className="text-sm text-muted-foreground hover:text-primary"
+                >
+                  Forgot your password?
+                </Link>
+              </div>
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Logging in..." : "Login"}
               </Button>
             </form>
           </Form>
-          <div className="mt-4 text-center text-sm">
-            <Link to="/auth/reset-password" className="text-primary hover:underline">
-              Forgot your password?
-            </Link>
-          </div>
         </CardContent>
         <CardFooter className="flex justify-center border-t px-6 py-4">
           <p className="text-sm text-muted-foreground">

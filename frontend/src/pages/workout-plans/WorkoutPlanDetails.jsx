@@ -1,15 +1,21 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaFire, FaWeightHanging, FaClock, FaCalendarAlt, FaDumbbell } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
+import axios from "axios";
 
 const WorkoutPlanDetails = () => {
   const { id } = useParams();
   const [workoutPlan, setWorkoutPlan] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [buttonLoading, setButtonLoading] = useState({ start: false, save: false });
+  const { isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // In a real application, this would be an API call to fetch the workout plan details
@@ -2490,6 +2496,63 @@ const WorkoutPlanDetails = () => {
     }
   };
 
+  // Function to handle starting a workout plan
+  const handleStartPlan = async () => {
+    if (!isAuthenticated) {
+      toast.error("Authentication required", {
+        description: "Please login to start this workout plan"
+      });
+      navigate("/login", { state: { from: `/workout-plans/${id}` } });
+      return;
+    }
+
+    setButtonLoading(prev => ({ ...prev, start: true }));
+    
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/user-workout-plans/${user.id}/start/${id}`);
+      
+      if (response.data.success) {
+        toast.success("Workout plan started successfully");
+        navigate("/dashboard/my-workouts");
+      } else {
+        toast.error(response.data.message || "Failed to start workout plan");
+      }
+    } catch (error) {
+      console.error("Error starting workout plan:", error);
+      toast.error("An error occurred while starting the workout plan");
+    } finally {
+      setButtonLoading(prev => ({ ...prev, start: false }));
+    }
+  };
+
+  // Function to handle saving a workout plan
+  const handleSavePlan = async () => {
+    if (!isAuthenticated) {
+      toast.error("Authentication required", {
+        description: "Please login to save this workout plan"
+      });
+      navigate("/login", { state: { from: `/workout-plans/${id}` } });
+      return;
+    }
+
+    setButtonLoading(prev => ({ ...prev, save: true }));
+    
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/user-workout-plans/${user.id}/save/${id}`);
+      
+      if (response.data.success) {
+        toast.success("Workout plan saved to your plans");
+      } else {
+        toast.error(response.data.message || "Failed to save workout plan");
+      }
+    } catch (error) {
+      console.error("Error saving workout plan:", error);
+      toast.error("An error occurred while saving the workout plan");
+    } finally {
+      setButtonLoading(prev => ({ ...prev, save: false }));
+    }
+  };
+
   if (loading) {
     return (
       <div className="container py-16 text-center">
@@ -2575,9 +2638,24 @@ const WorkoutPlanDetails = () => {
             </div>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button size="lg" className="w-full sm:w-auto">Start This Plan</Button>
-            <Button variant="outline" size="lg" className="w-full sm:w-auto">Save to My Plans</Button>
+          <div className="flex flex-col sm:flex-row gap-4 mt-8">
+            <Button 
+              size="lg" 
+              className="w-full sm:w-auto"
+              onClick={handleStartPlan}
+              disabled={buttonLoading.start}
+            >
+              {buttonLoading.start ? "Starting..." : "Start This Plan"}
+            </Button>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="w-full sm:w-auto"
+              onClick={handleSavePlan}
+              disabled={buttonLoading.save}
+            >
+              {buttonLoading.save ? "Saving..." : "Save to My Plans"}
+            </Button>
           </div>
         </div>
       </div>
@@ -2735,7 +2813,13 @@ const WorkoutPlanDetails = () => {
           Start this plan today and track your progress with our comprehensive fitness tools.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Button size="lg">Start This Plan</Button>
+          <Button 
+            size="lg"
+            onClick={handleStartPlan}
+            disabled={buttonLoading.start}
+          >
+            {buttonLoading.start ? "Starting..." : "Start This Plan"}
+          </Button>
           <Button variant="outline" size="lg" asChild>
             <Link to="/workout-plans" onClick={() => window.scrollTo(0, 0)}>Explore Other Plans</Link>
           </Button>

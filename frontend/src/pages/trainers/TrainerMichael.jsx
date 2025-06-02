@@ -14,7 +14,7 @@ const TrainerMichael = () => {
         
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "40px" }}>
           <img 
-            src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=300&auto=format&fit=crop" 
+            src="/public/images/Michael_Rodriguez.png" 
             alt="Michael Rodriguez" 
             style={{ 
               width: "200px", 
@@ -114,4 +114,4 @@ const TrainerMichael = () => {
   );
 };
 
-export default TrainerMichael; 
+export default TrainerMichael;

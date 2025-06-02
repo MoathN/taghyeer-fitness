@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { AuthProvider } from "./contexts/AuthContext";
 
 // Layouts
 import MainLayout from "./layouts/MainLayout";
@@ -39,6 +40,7 @@ import MuscleBuilding from "./pages/nutrition/MuscleBuilding";
 import SupplementsGuide from "./pages/nutrition/SupplementsGuide";
 import NutritionMyths from "./pages/nutrition/NutritionMyths";
 import Memberships from "./pages/memberships/Memberships";
+import PaymentGateway from "./pages/payment/PaymentGateway";
 import FAQ from "./pages/faq/FAQ";
 import PrivacyPolicy from "./pages/policies/PrivacyPolicy";
 import TermsOfService from "./pages/legal/TermsOfService";
@@ -64,7 +66,7 @@ function ScrollToTop() {
 
 function App() {
   return (
-    <>
+    <AuthProvider>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<MainLayout />}>
@@ -98,6 +100,7 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
           <Route path="memberships" element={<Memberships />} />
+          <Route path="payment" element={<PaymentGateway />} />
           <Route path="faq" element={<FAQ />} />
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
           <Route path="terms" element={<TermsOfService />} />
@@ -134,7 +137,7 @@ function App() {
           />
         </Route>
       </Routes>
-    </>
+    </AuthProvider>
   );
 }
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { FiMenu } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
+import { FiMenu, FiUser, FiSettings, FiLogOut } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -11,86 +11,110 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/contexts/AuthContext";
 
-const Header = ({ user, onLogout }) => {
+const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
   const isAdmin = user?.role === 'admin';
+  const navigate = useNavigate();
 
+  // Navigation items with corresponding admin pages
   const navItems = [
-    { label: "Home", path: "/" },
-    { label: "Workout Plans", path: "/workout-plans" },
-    { label: "Nutrition", path: "/nutrition" },
-    { label: "Trainers", path: "/trainers" },
-    { label: "Shop", path: "/shop" },
-    { label: "About", path: "/about" },
-    { label: "Contact", path: "/contact" },
+    { label: "Home", path: "/", adminPath: "/admin" },
+    { label: "Workout Plans", path: "/workout-plans", adminPath: "/admin/workout-plans" },
+    { label: "Nutrition", path: "/nutrition", adminPath: "/admin/products" }, // Maps to products in admin
+    { label: "Trainers", path: "/trainers", adminPath: "/admin/users" }, // Maps to users in admin
+    { label: "Shop", path: "/shop", adminPath: "/admin/products" },
+    { label: "About", path: "/about", adminPath: "/admin" },
+    { label: "Contact", path: "/contact", adminPath: "/admin/contact-messages" },
   ];
 
+  // Handle navigation click based on user role
+  const handleNavClick = (item, event) => {
+    event.preventDefault();
+    if (isAdmin) {
+      navigate(item.adminPath);
+    } else {
+      navigate(item.path);
+    }
+    window.scrollTo(0, 0);
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gymmawy-gray/10 bg-gymmawy-purple py-3">
-      <div className="container flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Link to="/" className="flex items-center space-x-2">
-            <span className="text-3xl font-extrabold uppercase tracking-wider text-primary">TAGHYEER</span>
+    <header className="sticky top-0 z-50 w-full border-b border-primary/10 bg-gymmawy-black/95 backdrop-blur supports-[backdrop-filter]:bg-gymmawy-black/60">
+      <div className="container flex h-16 items-center">
+        <div className="flex w-full items-center justify-between">
+          <Link to="/" className="flex items-center">
+            <span className="text-2xl font-extrabold uppercase tracking-wider text-primary">TAGHYEER</span>
           </Link>
-        </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
-          {navItems.map((item, index) => (
-            <Link
-              key={index}
-              to={item.path}
-              className="text-sm font-semibold uppercase tracking-wide transition-colors hover:text-primary"
-              onClick={() => window.scrollTo(0, 0)}
-            >
-              {item.label}
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-6">
+            <Link to="/" className="text-sm font-medium text-gymmawy-white transition-colors hover:text-primary">
+              Home
             </Link>
-          ))}
-        </nav>
+            <Link to="/workout-plans" className="text-sm font-medium text-gymmawy-white transition-colors hover:text-primary">
+              Workout Plans
+            </Link>
+            <Link to="/nutrition" className="text-sm font-medium text-gymmawy-white transition-colors hover:text-primary">
+              Nutrition
+            </Link>
+            <Link to="/trainers" className="text-sm font-medium text-gymmawy-white transition-colors hover:text-primary">
+              Trainers
+            </Link>
+            <Link to="/shop" className="text-sm font-medium text-gymmawy-white transition-colors hover:text-primary">
+              Shop
+            </Link>
+            <Link to="/memberships" className="text-sm font-medium text-gymmawy-white transition-colors hover:text-primary">
+              Memberships
+            </Link>
+          </nav>
 
-        {/* Auth Buttons or User Menu */}
-        <div className="flex items-center gap-4">
+          {/* User Menu or Login/Register Buttons */}
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8 border border-primary/20">
-                    <AvatarImage src={user.image} alt={user.name} />
-                    <AvatarFallback className="bg-primary text-white">{user.name?.charAt(0)}</AvatarFallback>
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="/avatars/01.png" alt={user.name} />
+                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 border-primary/20 bg-gymmawy-purple/95" align="end" forceMount>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium leading-none">{user.name}</p>
                     <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
                   </div>
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-gymmawy-gray/20" />
-                <DropdownMenuItem asChild className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary">
-                  <Link to="/dashboard">Dashboard</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary">
-                  <Link to="/profile">Profile</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary">
-                  <Link to="/memberships">My Membership</Link>
-                </DropdownMenuItem>
-                {isAdmin && (
-                  <>
-                    <DropdownMenuSeparator className="bg-gymmawy-gray/20" />
-                    <DropdownMenuLabel className="font-medium text-xs text-primary">Admin</DropdownMenuLabel>
-                    <DropdownMenuItem asChild className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary">
-                      <Link to="/admin/contact-messages">Contact Messages</Link>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem asChild>
+                    <Link to="/dashboard">
+                      <FiUser className="mr-2 h-4 w-4" />
+                      <span>Dashboard</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  {user.role === "admin" && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/admin">
+                        <FiSettings className="mr-2 h-4 w-4" />
+                        <span>Admin Panel</span>
+                      </Link>
                     </DropdownMenuItem>
-                  </>
-                )}
-                <DropdownMenuSeparator className="bg-gymmawy-gray/20" />
-                <DropdownMenuItem onClick={onLogout} className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary">
-                  Log out
+                  )}
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={logout} className="text-red-600">
+                  <FiLogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -125,19 +149,40 @@ const Header = ({ user, onLogout }) => {
                 <nav className="flex flex-col gap-6">
                   {navItems.map((item, index) => (
                     <div key={index}>
-                      <Link
-                        to={item.path}
+                      <a
+                        href={isAdmin ? item.adminPath : item.path}
                         className="text-base font-semibold uppercase tracking-wider transition-colors hover:text-primary"
-                        onClick={() => setIsMobileMenuOpen(false)}
+                        onClick={(e) => handleNavClick(item, e)}
                       >
                         {item.label}
-                      </Link>
+                      </a>
                     </div>
                   ))}
                   {isAdmin && (
                     <>
                       <div className="mt-4 border-t border-gymmawy-gray/20 pt-4">
                         <p className="text-sm font-medium text-primary">Admin</p>
+                        <Link
+                          to="/admin/users"
+                          className="mt-2 block text-base transition-colors hover:text-primary"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          Users
+                        </Link>
+                        <Link
+                          to="/admin/workout-plans"
+                          className="mt-2 block text-base transition-colors hover:text-primary"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          Workout Plans
+                        </Link>
+                        <Link
+                          to="/admin/products"
+                          className="mt-2 block text-base transition-colors hover:text-primary"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          Products
+                        </Link>
                         <Link
                           to="/admin/contact-messages"
                           className="mt-2 block text-base transition-colors hover:text-primary"
